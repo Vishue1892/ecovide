@@ -1,0 +1,47 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    list-style: none;
+    font-family: 'Krub', sans-serif;
+}
+.main{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    text-align: center;
+}
+  
+  .menu{
+    width: 15%;
+    background-color:#852b9c;
+}
+  #logo{
+    color:white;
+    font-size: 30px;
+    letter-spacing: 4px;
+    padding: 15px;
+    background-color: #000;
+  }
+  .menu a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  letter-spacing: 2px;
+  display: list-item;
+  padding: 20px;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  text-align: unset;
+  }
+  .menu a:hover {
+    background-color: blueviolet;
+    transition: 2s;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  #calendar{
+    padding: 0px;
+    margin: 0px;
+    width: 85%;
+  }
