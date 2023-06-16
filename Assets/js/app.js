@@ -23,20 +23,23 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('titulo').textContent = 'Registrar Citas';
             myModal.show();
         },
-        eventClick : function (info) {
-            console.log(info); 
+        eventClick: function (info) {
+            console.log(info);
+            console.log(info.event);
             eliminar.classList.remove('d-none');
             document.getElementById('titulo').textContent = 'Modificar Citas';
             document.getElementById('btnAccion').textContent = 'Modificar';
             document.getElementById('id').value = info.event.id;
             document.getElementById('title').value = info.event.title;
+            document.getElementById('name').value = info.event._def.extendedProps.name;
             document.getElementById('start').value = info.event.startStr;
+            document.getElementById('time').value = info.event._def.extendedProps.time;
             document.getElementById('color').value = info.event.backgroundColor;
             myModal.show();
-        },
+        },   
         eventDrop: function(info){
             const id = info.event.id;
-            const fecha = info.event.startStr;
+            const fecha = info.event.start.toISOString().slice(0, 10);
             const url=base_url + 'Home/drop';
             const http=new XMLHttpRequest();
             const data = new FormData();
@@ -59,29 +62,34 @@ document.addEventListener('DOMContentLoaded', function() {
                         respuesta.tipo
                     )
                 }
-        }
+        } 
     }
     });
     calendar.render();
-    frm.addEventListener('submit', function(e){
+    frm.addEventListener('submit', function(e) {
         e.preventDefault();
-        const title=document.getElementById('title').value;
-        const fecha=document.getElementById('start').value;
-        const color=document.getElementById('color').value;
-        if (title==''|| fecha==''|| color=='') {
+        const title = document.getElementById('title').value;
+        const nombre = document.getElementById('name').value;
+        const fecha = document.getElementById('start').value;
+        const time = document.getElementById('time').value;
+        const color = document.getElementById('color').value;
+        if (title == '' || fecha == '' || color == '') {
             Swal.fire(
                 'Aviso',
                 'Todos los campos son requeridos',
                 'warning'
-            )
+            );
         }else{
-            const url=base_url + 'Home/registrar';
-            const http=new XMLHttpRequest();
+            const url = base_url + 'Home/registrar';
+            const http = new XMLHttpRequest();
+            const data = new FormData(frm);
+            data.append('name', nombre); // Agregar el nombre del paciente al formulario
             http.open('POST', url, true);
-            http.send(new FormData(frm));
+            http.send(data);
+            //http.send(new FormData(frm));
             http.onreadystatechange=function(){
                 if(this.readyState== 4 && this.status == 200){
-                    //console.log(this.responseText);
+                    console.log(this.responseText);
                     const respuesta= JSON.parse(this.responseText);
                     console.log(respuesta);
                     if (respuesta.estado) {
@@ -114,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const url=base_url + 'Home/eliminar/' + id;
                 const http=new XMLHttpRequest();
                 http.open('GET', url, true);
-                http.send(new FormData(frm));
+                http.send(new FormData(frm));   
                 http.onreadystatechange=function(){
                     if(this.readyState== 4 && this.status == 200){
                         //console.log(this.responseText);
